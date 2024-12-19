@@ -1,73 +1,3 @@
-// if (index < 0 || index >= buckets.length) {
-//   throw new Error("Trying to access index out of bounds");
-// }
-
-// For loadFactor, see the following:
-// If the array is 16 units long, and 14 are filled, 14 / 16 = 0.875.
-// That is above the static loadFactor of 0.75, meaning new buckets must be made.
-
-class Node {
-  constructor(key, value = null) {
-    this.key = key;
-    this.value = value;
-    this.next = null;
-  }
-}
-
-class HashMap {
-  constructor() {
-    this.loadFactor = 0.75;
-    this.buckets = new Array(16).fill(null).map(() => new LinkedList());
-    this.capacity = this.buckets.length;
-  }
-
-  hash(key) {
-    let hashCode = 0;
-
-    const primeNumber = 31;
-    for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
-    }
-
-    return hashCode % this.capacity;
-  }
-
-  set(key, value) {
-    // Hash the key
-    let hashCode = this.hash(key);
-    if (hashCode < 0 || hashCode >= this.capacity) {
-      throw new Error("Trying to access index out of bounds");
-    }
-    // Add to bucket using hashCode
-    this.buckets[hashCode].append(key, value);
-  }
-
-  get(key) {
-    let hashCode = this.hash(key);
-    return this.buckets[hashCode].containsKey(key);
-  }
-
-  has(key) {
-    let hashCode = this.hash(key);
-    return this.buckets[hashCode].findKey(key);
-  }
-
-  remove(key) {}
-
-  length() {}
-
-  clear() {}
-
-  keys() {}
-
-  values() {}
-
-  entries() {}
-}
-
-const test = new HashMap();
-test.set("apple", "red");
-
 class LinkedList {
   constructor() {
     this.head = null;
@@ -75,8 +5,8 @@ class LinkedList {
   }
 
   // Add new Node to end of list
-  append(key, value) {
-    const newNode = new Node(key, value);
+  append(value) {
+    const newNode = new Node(value);
     let currentNode;
 
     if (!this.head) {
@@ -93,8 +23,8 @@ class LinkedList {
   }
 
   // Add new Node to front of list
-  prepend(key, value) {
-    const newNode = new Node(key, value);
+  prepend(value) {
+    const newNode = new Node(value);
     let currentNode;
 
     if (!this.head) {
@@ -161,20 +91,6 @@ class LinkedList {
     }
   }
 
-  containsKey(key) {
-    let currentNode;
-    if (!this.head) {
-      return;
-    } else {
-      currentNode = this.head;
-      for (let i = 0; i < this.size; i++) {
-        if (currentNode.key === key) return currentNode.value;
-        currentNode = currentNode.next;
-      }
-      return false;
-    }
-  }
-
   find(value) {
     let currentNode;
     if (!this.head) {
@@ -189,28 +105,14 @@ class LinkedList {
     }
   }
 
-  findKey(key) {
-    let currentNode;
-    if (!this.head) {
-      return;
-    } else {
-      currentNode = this.head;
-      for (let i = 1; i < this.size + 1; i++) {
-        if (currentNode.key === key) return true;
-        currentNode = currentNode.next;
-      }
-      return false;
-    }
-  }
-
-  insertAt(key, value, index) {
+  insertAt(value, index) {
     let currentNode;
     if (index > this.size - 1 || index < 0) return;
     currentNode = this.head;
     for (let i = 1; i < index - 1; i++) {
       currentNode = currentNode.next;
     }
-    const newNode = new Node(key, value);
+    const newNode = new Node(value);
     let placeholder;
     placeholder = currentNode.next;
     currentNode.next = newNode;
