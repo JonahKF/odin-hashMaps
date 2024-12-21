@@ -14,60 +14,6 @@ class Node {
   }
 }
 
-class HashMap {
-  constructor() {
-    this.loadFactor = 0.75;
-    this.buckets = new Array(16).fill(null).map(() => new LinkedList());
-    this.capacity = this.buckets.length;
-  }
-
-  hash(key) {
-    let hashCode = 0;
-
-    const primeNumber = 31;
-    for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
-    }
-
-    return hashCode % this.capacity;
-  }
-
-  set(key, value) {
-    // Hash the key
-    let hashCode = this.hash(key);
-    if (hashCode < 0 || hashCode >= this.capacity) {
-      throw new Error("Trying to access index out of bounds");
-    }
-    // Add to bucket using hashCode
-    this.buckets[hashCode].append(key, value);
-  }
-
-  get(key) {
-    let hashCode = this.hash(key);
-    return this.buckets[hashCode].containsKey(key);
-  }
-
-  has(key) {
-    let hashCode = this.hash(key);
-    return this.buckets[hashCode].findKey(key);
-  }
-
-  remove(key) {}
-
-  length() {}
-
-  clear() {}
-
-  keys() {}
-
-  values() {}
-
-  entries() {}
-}
-
-const test = new HashMap();
-test.set("apple", "red");
-
 class LinkedList {
   constructor() {
     this.head = null;
@@ -249,3 +195,62 @@ class LinkedList {
     }
   }
 }
+
+// HashMap Implentation Below
+class HashMap {
+  constructor() {
+    this.loadFactor = 0.75;
+    this.buckets = new Array(16).fill(null).map(() => new LinkedList());
+    this.capacity = this.buckets.length;
+  }
+
+  hash(key) {
+    let hashCode = 0;
+
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+    }
+
+    return hashCode % this.capacity;
+  }
+
+  set(key, value) {
+    // Hash the key
+    let hashCode = this.hash(key);
+
+    // Prevent default JS behavior, limit to current buckets
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    // Add to bucket using hashCode
+    this.buckets[hashCode].append(key, value);
+  }
+
+  get(key) {
+    let hashCode = this.hash(key);
+    return this.buckets[hashCode].containsKey(key);
+  }
+
+  has(key) {
+    let hashCode = this.hash(key);
+    return this.buckets[hashCode].findKey(key);
+  }
+
+  remove(key) {}
+
+  length() {}
+
+  clear() {}
+
+  keys() {}
+
+  values() {}
+
+  entries() {}
+}
+
+const test = new HashMap();
+test.set("apple", "red");
+console.log(test.get("apple"));
