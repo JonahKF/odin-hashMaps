@@ -202,6 +202,7 @@ class HashMap {
     this.loadFactor = 0.75;
     this.buckets = new Array(16).fill(null).map(() => new LinkedList());
     this.capacity = this.buckets.length;
+    this.size = 0;
   }
 
   hash(key) {
@@ -224,8 +225,36 @@ class HashMap {
       throw new Error("Trying to access index out of bounds");
     }
 
+    if (!this.has(key)) this.size++;
+
     // Add to bucket using hashCode
     this.buckets[hashCode].append(key, value);
+
+    // Add more buckets if needed
+    if (this.checkLoadFactor()) this.resize();
+  }
+
+  checkLoadFactor() {
+    return this.size / this.capacity > this.loadFactor;
+  }
+
+  resize() {
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.buckets = new Array(this.capacity)
+      .fill(null)
+      .map(() => new LinkedList());
+    this.size = 0;
+
+    // Rehash all existing entries
+    oldBuckets.forEach((bucket) => {
+      let current = bucket.head;
+      // Iterates through LinkedList for as long as head != null
+      while (current) {
+        this.set(current.key, current.value);
+        current = current.next;
+      }
+    });
   }
 
   get(key) {
@@ -238,7 +267,17 @@ class HashMap {
     return this.buckets[hashCode].findKey(key);
   }
 
-  remove(key) {}
+  remove(key) {
+    let hashCode = this.hash(key);
+    if (this.buckets[hashCode].containsKey(key)) {
+      const index = this.buckets[hashCode].find(
+        this.buckets[hashCode].containsKey(key),
+      );
+      this.buckets[hashCode].removeAt(index);
+    } else {
+      return;
+    }
+  }
 
   length() {}
 
