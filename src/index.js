@@ -360,8 +360,8 @@ class HashMap {
 }
 
 // Test Code Below
-// const test = new HashMap();
-// test.set("apple", "red");
+const test = new HashMap();
+test.set("apple", "red");
 // test.set("banana", "yellow");
 // test.set("carrot", "orange");
 // test.set("dog", "brown");
