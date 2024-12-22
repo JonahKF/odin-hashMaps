@@ -136,6 +136,21 @@ class LinkedList {
     return keys;
   }
 
+  returnAllValues() {
+    let currentNode;
+    let values = [];
+    if (!this.head) {
+      return;
+    } else {
+      currentNode = this.head;
+      for (let i = 0; i < this.size; i++) {
+        values.push(currentNode.value);
+        currentNode = currentNode.next;
+      }
+    }
+    return values;
+  }
+
   find(value) {
     let currentNode;
     if (!this.head) {
@@ -312,7 +327,13 @@ class HashMap {
     return arr;
   }
 
-  values() {}
+  values() {
+    let arr = [];
+    this.buckets.forEach((bucket) => {
+      arr = arr.concat(bucket.returnAllValues());
+    });
+    return arr;
+  }
 
   entries() {}
 }
@@ -327,3 +348,4 @@ test.set("frog", "green");
 test.set("grape", "purple");
 test.set("hat", "black");
 console.log(test.keys());
+console.log(test.values());
