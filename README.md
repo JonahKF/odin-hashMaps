@@ -1,3 +1,4 @@
-# template
+# HashMap
 
-Template repo for The Odin Project lessons. Created during the "Revisiting Webpack" lesson.
+HashMap functionality in JavaScript using ES6 Class syntax.
+Created for The Odin Project's Node.js path.
