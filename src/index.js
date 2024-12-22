@@ -322,7 +322,7 @@ class HashMap {
   keys() {
     let arr = [];
     this.buckets.forEach((bucket) => {
-      arr = arr.concat(bucket.returnAllKeys());
+      if (bucket.size !== 0) arr = arr.concat(bucket.returnAllKeys());
     });
     return arr;
   }
@@ -330,7 +330,7 @@ class HashMap {
   values() {
     let arr = [];
     this.buckets.forEach((bucket) => {
-      arr = arr.concat(bucket.returnAllValues());
+      if (bucket.size !== 0) arr = arr.concat(bucket.returnAllValues());
     });
     return arr;
   }
@@ -348,4 +348,4 @@ test.set("frog", "green");
 test.set("grape", "purple");
 test.set("hat", "black");
 console.log(test.keys());
-console.log(test.values());
+// console.log(test.values());
