@@ -121,6 +121,21 @@ class LinkedList {
     }
   }
 
+  returnAllKeys() {
+    let currentNode;
+    let keys = [];
+    if (!this.head) {
+      return;
+    } else {
+      currentNode = this.head;
+      for (let i = 0; i < this.size; i++) {
+        keys.push(currentNode.key);
+        currentNode = currentNode.next;
+      }
+    }
+    return keys;
+  }
+
   find(value) {
     let currentNode;
     if (!this.head) {
@@ -279,11 +294,23 @@ class HashMap {
     }
   }
 
-  length() {}
+  length() {
+    return this.size;
+  }
 
-  clear() {}
+  clear() {
+    this.buckets = new Array(16).fill(null).map(() => new LinkedList());
+    this.capacity = this.buckets.length;
+    this.size = 0;
+  }
 
-  keys() {}
+  keys() {
+    let arr = [];
+    this.buckets.forEach((bucket) => {
+      arr = arr.concat(bucket.returnAllKeys());
+    });
+    return arr;
+  }
 
   values() {}
 
@@ -292,4 +319,11 @@ class HashMap {
 
 const test = new HashMap();
 test.set("apple", "red");
-console.log(test.get("apple"));
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+console.log(test.keys());
